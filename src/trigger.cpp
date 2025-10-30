@@ -9,6 +9,7 @@ static const unsigned long debounceDelay = 50; // milliseconds
 
 
 void triggerTask(void *parameter) {
+  
 
     pinMode(triggerPin, INPUT_PULLUP);
 
@@ -29,10 +30,11 @@ void triggerTask(void *parameter) {
         // state changed after debouncing
         stableState = reading;
         if (stableState == LOW) {
+          Serial.println("Trigger pressed!");
           // falling edge detected: button pressed
-          triggerPressed = true;
+          xEventGroupSetBits(EventGroupHandle, AUDIO_START_BIT);
+          
         }
-        // if stableState == HIGH (button released), just update state
       }
     }
 
