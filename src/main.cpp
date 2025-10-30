@@ -31,6 +31,15 @@ void setup() {
       NULL                  // Task handle
   );
 
+  xTaskCreate(
+      rumbleTask,          // Task function
+      "Rumble Task",       // Name of the task (for debugging)
+      2048,                 // Stack size (in words)
+      NULL,                 // Task input parameter
+      1,                    // Priority of the task
+      NULL                  // Task handle
+  );
+
 }
 
 

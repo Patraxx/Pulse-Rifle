@@ -15,13 +15,14 @@
 #include "freertos/event_groups.h"
 #include "pulse.h"
 #include "sound.h"
+#include "rumble.h"
 
 #define vibration_pin 27
 
 extern EventGroupHandle_t EventGroupHandle;
-#define VIBRATION_BIT BIT0
+#define VIBRATING_BIT BIT0
 #define AUDIO_PLAYING_BIT BIT1
 #define AUDIO_INTERRUPT_BIT BIT2
 #define AUDIO_START_BIT BIT3
-
+#define RUMBLE_START_BIT BIT4
 #endif // HEADERS_H

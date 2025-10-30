@@ -9,8 +9,9 @@ static const unsigned long debounceDelay = 50; // milliseconds
 
 
 void triggerTask(void *parameter) {
+   EventBits_t bits;
   
-
+   //insert auto-fire-mode later
     pinMode(triggerPin, INPUT_PULLUP);
 
   while (true) {
@@ -30,9 +31,15 @@ void triggerTask(void *parameter) {
         // state changed after debouncing
         stableState = reading;
         if (stableState == LOW) {
+          bits = xEventGroupGetBits(EventGroupHandle);
+          if ((bits & AUDIO_PLAYING_BIT)) {
+            xEventGroupSetBits(EventGroupHandle, AUDIO_INTERRUPT_BIT);
+          }
+
           Serial.println("Trigger pressed!");
           // falling edge detected: button pressed
           xEventGroupSetBits(EventGroupHandle, AUDIO_START_BIT);
+          xEventGroupSetBits(EventGroupHandle, RUMBLE_START_BIT);
           
         }
       }

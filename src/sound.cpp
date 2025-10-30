@@ -74,12 +74,12 @@ void gun_fire_task(void *parameter) {
                     // Clear the interrupt bit
                     xEventGroupClearBits(EventGroupHandle, AUDIO_INTERRUPT_BIT);
                     xEventGroupSetBits(EventGroupHandle, AUDIO_START_BIT);
-                    delete currentSample;
                     break;
                 }
                 wav->loop();
                 vTaskDelay(10 / portTICK_PERIOD_MS);
             }
+            xEventGroupClearBits(EventGroupHandle, AUDIO_PLAYING_BIT);
             delete currentSample;
         }
     }
