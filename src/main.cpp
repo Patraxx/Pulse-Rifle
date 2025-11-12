@@ -3,11 +3,12 @@
 EventGroupHandle_t EventGroupHandle;
 
 
+
 void setup() {
   EventGroupHandle = xEventGroupCreate();
-
+ 
   pinMode(vibration_pin, OUTPUT);
-  digitalWrite(vibration_pin, LOW);
+  digitalWrite(vibration_pin, HIGH);
   Serial.begin(115200);
   delay(1000);
   Serial.println("Start");
@@ -41,6 +42,7 @@ void setup() {
   );
 
 }
+
 
 
 void loop() {

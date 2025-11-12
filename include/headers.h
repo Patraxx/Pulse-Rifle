@@ -26,3 +26,6 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AUDIO_START_BIT BIT3
 #define RUMBLE_START_BIT BIT4
 #endif // HEADERS_H
+
+#define testMode 1
+

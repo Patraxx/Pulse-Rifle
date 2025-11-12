@@ -17,15 +17,37 @@ const size_t sample_lengths[4] = {
 };
 AudioOutputI2S *out;
 
+const uint8_t* test_data[2] = {
+normal_pulse,
+louder_normal
+};
+const size_t test_lengths[2]{
+    normal_pulse_length,
+    louder_normal_length
+};
+#define INDEX_SIZE 2
+
+/* small gain-cycle for quick tests: will rotate through these per-play */
+static const float gain_cycle[] = { 1.5f,2.0f, 2.5f };
+static const size_t gain_cycle_len = sizeof(gain_cycle)/sizeof(gain_cycle[0]);
+static size_t gain_index = 0;
 
 
+void gainCycleTest() {
+      if (out) {
+                float g = gain_cycle[gain_index % gain_cycle_len];
+                out->SetGain(g);
+                Serial.printf("Gain set to %.2f (cycle idx %u)\n", g, (unsigned)gain_index);
+                gain_index = (gain_index + 1) % gain_cycle_len;
+            }
+}
 
 void setupSound() {
    
     wav = new AudioGeneratorWAV();
     out = new AudioOutputI2S();
     out->SetPinout(26, 25, 22);
-    out->SetGain(0.8); // 0.0 .. 4.0
+    out->SetGain(1.0f); // 0.0 .. 4.0
 }
 
 void gun_fire_task(void *parameter) {
@@ -40,15 +62,23 @@ void gun_fire_task(void *parameter) {
 
         bits = xEventGroupWaitBits(EventGroupHandle, AUDIO_START_BIT, pdTRUE, pdFALSE, portMAX_DELAY);
         Serial.println("Gun fire task activated");
+        if (testMode == 1){
+            index = 0;
+        }
+           
 
 
     
         if(bits & AUDIO_START_BIT){
             
-            if(index >= 4) index = 0;
+            if(index >= INDEX_SIZE) index = 0;
 
 
+            if (testMode == 1){
+            AudioFileSourcePROGMEM *currentSample = new AudioFileSourcePROGMEM(test_data[index], test_lengths[index]);
+            } else {
             AudioFileSourcePROGMEM *currentSample = new AudioFileSourcePROGMEM(sample_data[index], sample_lengths[index]);
+            }   
 
             if(wav->isRunning()) {
                 wav->stop();
@@ -57,6 +87,8 @@ void gun_fire_task(void *parameter) {
             
 
             Serial.println("Playing sound sample index: " + String(index));
+            /* Apply cyclic gain for this play (helps quick A/B testing) */
+          
     
             if (!wav->begin(currentSample, out)) {
              Serial.printf("❌ wav->begin() failed for index %d\n", index);
