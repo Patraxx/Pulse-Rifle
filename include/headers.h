@@ -25,6 +25,8 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AUDIO_INTERRUPT_BIT BIT2
 #define AUDIO_START_BIT BIT3
 #define RUMBLE_START_BIT BIT4
+#define INDEX_SIZE 5
+extern volatile int current_sample_index;
 #endif // HEADERS_H
 
 #define testMode 1

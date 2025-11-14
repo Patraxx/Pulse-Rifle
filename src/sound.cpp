@@ -2,35 +2,31 @@
 #include "sound.h"
 
 AudioGeneratorWAV *wav;
+/* exported indicator of which sample index is currently requested/playing */
+volatile int current_sample_index = 0;
 
-const uint8_t* sample_data[4] = {
-normal_pulse,
-higher_pulse,
-lower_pitched_pulse,
-higher_pitched_pulse
+const uint8_t* sample_data[5] = {
+pulse_one,
+pulse_five,
+pulse_two,
+pulse_three,
+pulse_four
+
 };
-const size_t sample_lengths[4] = {
-    normal_pulse_length,
-    higher_pulse_length,
-    lower_pitched_length,
-    higher_pitched_length
+const size_t sample_lengths[5] = {
+    pulse_one_length,
+    pulse_five_length,
+    pulse_two_length,
+    pulse_three_length,
+    pulse_four_length,
 };
 AudioOutputI2S *out;
-
-const uint8_t* test_data[2] = {
-normal_pulse,
-louder_normal
-};
-const size_t test_lengths[2]{
-    normal_pulse_length,
-    louder_normal_length
-};
-#define INDEX_SIZE 2
 
 /* small gain-cycle for quick tests: will rotate through these per-play */
 static const float gain_cycle[] = { 1.5f,2.0f, 2.5f };
 static const size_t gain_cycle_len = sizeof(gain_cycle)/sizeof(gain_cycle[0]);
 static size_t gain_index = 0;
+
 
 
 void gainCycleTest() {
@@ -47,43 +43,47 @@ void setupSound() {
     wav = new AudioGeneratorWAV();
     out = new AudioOutputI2S();
     out->SetPinout(26, 25, 22);
-    out->SetGain(1.0f); // 0.0 .. 4.0
+    out->SetGain(0.8); // 0.0 .. 4.0
 }
 
 void gun_fire_task(void *parameter) {
     setupSound();
     EventBits_t bits;
 
-   int index = 0;
-    
 
 
     for(;;) {
 
         bits = xEventGroupWaitBits(EventGroupHandle, AUDIO_START_BIT, pdTRUE, pdFALSE, portMAX_DELAY);
         Serial.println("Gun fire task activated");
-        if (testMode == 1){
-            index = 0;
-        }
-           
 
+        /* local play index to avoid global name conflicts */
+        int index = 0;
 
-    
         if(bits & AUDIO_START_BIT){
-            
-            if(index >= INDEX_SIZE) index = 0;
+            /* keep index persistent per-task by using a static local */
+            static int play_index = 0;
+            index = play_index;
+            if (index >= INDEX_SIZE) index = 0;
 
+            /* publish the index for other tasks (rumble) */
+            current_sample_index = index;
 
-            if (testMode == 1){
-            AudioFileSourcePROGMEM *currentSample = new AudioFileSourcePROGMEM(test_data[index], test_lengths[index]);
-            } else {
             AudioFileSourcePROGMEM *currentSample = new AudioFileSourcePROGMEM(sample_data[index], sample_lengths[index]);
-            }   
+
+            if(index == 3) {
+                out->SetGain(0.8); // 0.0 .. 4.0
+            }
+            else {
+                out->SetGain(1.0); // 0.0 .. 4.0
+            }
+               
 
             if(wav->isRunning()) {
                 wav->stop();
                 vTaskDelay(5 / portTICK_PERIOD_MS);
             }
+         
             
 
             Serial.println("Playing sound sample index: " + String(index));
@@ -95,7 +95,7 @@ void gun_fire_task(void *parameter) {
              continue;
                 }
             xEventGroupSetBits(EventGroupHandle, AUDIO_PLAYING_BIT);
-            index++;
+            play_index = (play_index + 1) % INDEX_SIZE;
             
 
             while(wav->isRunning()) {
