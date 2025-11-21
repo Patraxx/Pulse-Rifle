@@ -16,6 +16,7 @@
 #include "pulse.h"
 #include "sound.h"
 #include "rumble.h"
+#include "ammo_counter.h"
 
 #define vibration_pin 27
 

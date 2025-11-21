@@ -1,10 +1,15 @@
 #include "headers.h"
 
+#define LED_PIN 16
+
 void setupRumble() {
+    pinMode(LED_PIN, OUTPUT);
     pinMode(vibration_pin, OUTPUT);
-    digitalWrite(vibration_pin, LOW);
+    digitalWrite(vibration_pin, HIGH);
 }
 void rumbleTask(void *parameter) {
+    setupRumble();
+   
     EventBits_t bits;
 
         for (;;) {
@@ -21,8 +26,10 @@ void rumbleTask(void *parameter) {
                 break;
             }        
             digitalWrite(vibration_pin, LOW);
+            digitalWrite(LED_PIN, HIGH);
             vTaskDelay(30/ portTICK_PERIOD_MS);
             digitalWrite(vibration_pin, HIGH);
+            digitalWrite(LED_PIN, LOW);
             vTaskDelay(70/ portTICK_PERIOD_MS);       
         }
             
