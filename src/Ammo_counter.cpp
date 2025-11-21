@@ -41,18 +41,13 @@ const bool* LED_DIGITS[10] = {
 };
 
 void mux_loop_task(void *parameter) {
+
     for (;;) {
+        int currentDigit = 0;
 
 
 
-        for (int i = 0; i < 7; i++) {
-            digitalWrite(MUX_PIN_A, multiplexer_array[i][0]);
-            digitalWrite(MUX_PIN_B, multiplexer_array[i][1]);
-            digitalWrite(MUX_PIN_C, multiplexer_array[i][2]);
-            int led_on = LED_DIGITS[0][i]; // Example: display digit '9'
-            digitalWrite(LED_COMMON_PIN, led_on ? LOW : HIGH); // Activate common pin (assuming active low)        
-            vTaskDelay(1 / portTICK_PERIOD_MS); // Small delay to allow LED to be visible
-        }
+     
     }
     vTaskDelete(NULL);
 }
@@ -63,4 +58,15 @@ void setupAmmoCounter() {
     pinMode(MUX_PIN_C, OUTPUT);
     pinMode(LED_COMMON_PIN, OUTPUT);
     digitalWrite(LED_COMMON_PIN, HIGH); // Turn off common LED pin initially
+}
+
+void displayNumberLoop(int number) {
+ 
+        for (int i = 0; i < 7; i++) {
+            digitalWrite(MUX_PIN_A, multiplexer_array[i][0]);
+            digitalWrite(MUX_PIN_B, multiplexer_array[i][1]);
+            digitalWrite(MUX_PIN_C, multiplexer_array[i][2]);
+            int led_on = LED_DIGITS[number][i];
+            digitalWrite(LED_COMMON_PIN, led_on ? LOW : HIGH); // Activate common pin (assuming active low)                  
+        }
 }

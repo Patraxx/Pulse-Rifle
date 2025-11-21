@@ -33,6 +33,7 @@ extern const bool* LED_DIGITS[10];
 void setupAmmoCounter();
 void ammoCounterTask(void *parameter);
 void mux_loop_task(void *parameter);
+void displayNumberLoop(int number);
 
 
 
