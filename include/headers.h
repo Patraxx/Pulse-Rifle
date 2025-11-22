@@ -17,6 +17,7 @@
 #include "sound.h"
 #include "rumble.h"
 #include "ammo_counter.h"
+#include "freertos/semphr.h"
 
 #define vibration_pin 27
 
@@ -30,6 +31,7 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AMMO_REFILLED_BIT BIT6
 #define INDEX_SIZE 5
 extern volatile int current_sample_index;
+extern SemaphoreHandle_t audio_semaphore;
 #endif // HEADERS_H
 
 #define testMode 1

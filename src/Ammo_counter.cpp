@@ -50,20 +50,13 @@ void setupAmmoCounter() {
 
 void ammoCounterTask(void *parameter) {
     while (true) {
-
         currentDigitOne = currentAmmoCount % 10;
         currentDigitTwo = currentAmmoCount / 10;
-        displayDigit(urrentDigitOne);
+        displayDigit(currentDigitOne);
         displayDigit(currentDigitTwo);
-
-   
-
+        vTaskDelay(2 / portTICK_PERIOD_MS);
     }
-
-    
-
-        
-      
+    vTaskDelete(NULL);
 }
 void ammo_refill_loop() {
 
@@ -76,19 +69,12 @@ void ammo_refill_loop() {
 }
 
 void displayDigit(int number) {
-
+     const bool* segments = LED_DIGITS[number];
     for (int digit = 0; digit < 7; digit++) {
 
         digitalWrite(MUX_PIN_A, multiplexer_array[digit][0]);
         digitalWrite(MUX_PIN_B, multiplexer_array[digit][1]);
         digitalWrite(MUX_PIN_C, multiplexer_array[digit][2]);
-
-        const bool* segments = LED_DIGITS[number];
-
-        
-
-       
+        digitalWrite(LED_COMMON_PIN, segments[digit] ? LOW : HIGH); // Activate segment (assuming common anode)
     }
-    // Turn off common pin after displaying
-    digitalWrite(LED_COMMON_PIN, HIGH);
 }
