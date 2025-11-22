@@ -27,6 +27,7 @@ void rumbleTask(void *parameter) {
             }        
             digitalWrite(vibration_pin, LOW);
             digitalWrite(LED_PIN, HIGH);
+            currentAmmoCount--;
             vTaskDelay(30/ portTICK_PERIOD_MS);
             digitalWrite(vibration_pin, HIGH);
             digitalWrite(LED_PIN, LOW);

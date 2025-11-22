@@ -1,9 +1,6 @@
 #include "ammo_counter.h"
 
-static const bool ACTIVE_LOW = true; // Set to true if the LED segments are active low
-inline int led_state(bool on) {
-    return (on ^ ACTIVE_LOW) ? HIGH : LOW;
-}
+int volatile currentAmmoCount = 0;
 
 /* Definitions moved from header to a single translation unit to avoid multiple-definition errors */
 const int multiplexer_array[7][3] = {
@@ -49,31 +46,49 @@ void setupAmmoCounter() {
     digitalWrite(LED_COMMON_PIN, HIGH); // Turn off common LED pin initially
 }
 
-void displayNumberLoop(int number) {
 
-         
- 
-        for (int i = 0; i < 7; i++) {
-            digitalWrite(MUX_PIN_A, multiplexer_array[i][0]);
-            digitalWrite(MUX_PIN_B, multiplexer_array[i][1]);
-            digitalWrite(MUX_PIN_C, multiplexer_array[i][2]);
-            int led_on = LED_DIGITS[number][i];
-            digitalWrite(LED_COMMON_PIN, led_on ? LOW : HIGH); // Activate common pin (assuming active low)                  
-        }
-}
-
-void digit_counting_task(void *parameter) {
-
-
-    while (true) {
-        int ammo = currentAmmoCount;
-        currentDigitOne = ammo % 10;
-        currentDigitTwo = (ammo / 10) % 10;
-        vTaskDelay(100 / portTICK_PERIOD_MS); // Update every 100 ms
-    }
-}
 
 void ammoCounterTask(void *parameter) {
     while (true) {
+
+        currentDigitOne = currentAmmoCount % 10;
+        currentDigitTwo = currentAmmoCount / 10;
+        displayDigit(urrentDigitOne);
+        displayDigit(currentDigitTwo);
+
+   
+
+    }
+
+    
+
+        
       
+}
+void ammo_refill_loop() {
+
+    while (true) {
+        if (currentAmmoCount < 99) {
+            currentAmmoCount++;
+        }
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
+
+void displayDigit(int number) {
+
+    for (int digit = 0; digit < 7; digit++) {
+
+        digitalWrite(MUX_PIN_A, multiplexer_array[digit][0]);
+        digitalWrite(MUX_PIN_B, multiplexer_array[digit][1]);
+        digitalWrite(MUX_PIN_C, multiplexer_array[digit][2]);
+
+        const bool* segments = LED_DIGITS[number];
+
+        
+
+       
+    }
+    // Turn off common pin after displaying
+    digitalWrite(LED_COMMON_PIN, HIGH);
 }

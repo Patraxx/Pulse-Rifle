@@ -36,8 +36,8 @@ extern const bool* LED_DIGITS[10];
 
 void setupAmmoCounter();
 void ammoCounterTask(void *parameter);
-void digit_counting_task(void *parameter);
-void displayNumberLoop(int number);
+void ammo_refill_loop();
+void displayDigit(int number);
 
 
 
