@@ -40,17 +40,6 @@ const bool* LED_DIGITS[10] = {
    LED_DIGIT_9
 };
 
-void mux_loop_task(void *parameter) {
-
-    for (;;) {
-        int currentDigit = 0;
-
-
-
-     
-    }
-    vTaskDelete(NULL);
-}
 
 void setupAmmoCounter() {
     pinMode(MUX_PIN_A, OUTPUT);
@@ -61,6 +50,8 @@ void setupAmmoCounter() {
 }
 
 void displayNumberLoop(int number) {
+
+         
  
         for (int i = 0; i < 7; i++) {
             digitalWrite(MUX_PIN_A, multiplexer_array[i][0]);
@@ -69,4 +60,20 @@ void displayNumberLoop(int number) {
             int led_on = LED_DIGITS[number][i];
             digitalWrite(LED_COMMON_PIN, led_on ? LOW : HIGH); // Activate common pin (assuming active low)                  
         }
+}
+
+void digit_counting_task(void *parameter) {
+
+
+    while (true) {
+        int ammo = currentAmmoCount;
+        currentDigitOne = ammo % 10;
+        currentDigitTwo = (ammo / 10) % 10;
+        vTaskDelay(100 / portTICK_PERIOD_MS); // Update every 100 ms
+    }
+}
+
+void ammoCounterTask(void *parameter) {
+    while (true) {
+      
 }

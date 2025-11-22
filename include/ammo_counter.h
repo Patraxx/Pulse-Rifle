@@ -16,6 +16,10 @@
     */
 
 extern const int multiplexer_array[7][3];
+extern volatile int currentAmmoCount;
+extern volatile int currentDigitOne;
+extern volatile int currentDigitTwo;
+
 
 extern const bool LED_DIGIT_0[7];
 extern const bool LED_DIGIT_1[7];
@@ -32,7 +36,7 @@ extern const bool* LED_DIGITS[10];
 
 void setupAmmoCounter();
 void ammoCounterTask(void *parameter);
-void mux_loop_task(void *parameter);
+void digit_counting_task(void *parameter);
 void displayNumberLoop(int number);
 
 

@@ -26,6 +26,8 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AUDIO_INTERRUPT_BIT BIT2
 #define AUDIO_START_BIT BIT3
 #define RUMBLE_START_BIT BIT4
+#define AMMO_EXPENDED_BIT BIT5
+#define AMMO_REFILLED_BIT BIT6
 #define INDEX_SIZE 5
 extern volatile int current_sample_index;
 #endif // HEADERS_H
