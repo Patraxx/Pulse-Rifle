@@ -30,8 +30,9 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AMMO_EXPENDED_BIT BIT5
 #define AMMO_REFILLED_BIT BIT6
 #define INDEX_SIZE 5
-extern volatile int current_sample_index;
-extern SemaphoreHandle_t audio_semaphore;
+extern int current_sample_index;
+extern SemaphoreHandle_t ammoCountMutex;
+
 #endif // HEADERS_H
 
 #define testMode 1

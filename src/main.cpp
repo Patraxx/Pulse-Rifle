@@ -6,6 +6,8 @@ EventGroupHandle_t EventGroupHandle;
 
 void setup() {
 
+   ammoCountMutex = xSemaphoreCreateMutex();
+
    setupAmmoCounter();
    xTaskCreate(
       mux_loop_task,          // Task function

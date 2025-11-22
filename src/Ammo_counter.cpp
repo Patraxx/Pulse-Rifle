@@ -1,6 +1,10 @@
 #include "ammo_counter.h"
 
-int volatile currentAmmoCount = 0;
+int currentAmmoCount = 0;
+SemaphoreHandle_t ammoCountMutex = NULL;
+
+static int lastKnownAmmoCount = 0;
+
 
 /* Definitions moved from header to a single translation unit to avoid multiple-definition errors */
 const int multiplexer_array[7][3] = {
@@ -78,3 +82,17 @@ void displayDigit(int number) {
         digitalWrite(LED_COMMON_PIN, segments[digit] ? LOW : HIGH); // Activate segment (assuming common anode)
     }
 }
+
+int getAmmmoCount(){
+
+    int localAmmo = -1;
+    if (xSemaphoreTake(ammoCountMutex,0) == pdTRUE) {
+        localAmmo = currentAmmoCount;
+        lastKnownAmmoCount = localAmmo;
+        xSemaphoreGive(ammoCountMutex);
+    }
+    else {Serial.println("Failed to take ammoCountMutex in getAmmoCount()");
+    }
+    return localAmmo;
+}
+
