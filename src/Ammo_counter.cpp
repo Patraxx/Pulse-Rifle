@@ -20,17 +20,18 @@ const int multiplexer_array[7][3] = {
 
 
 
+// 1 = off (segment off), 0 = on (segment on)
+const bool LED_DIGIT_0[7]= {0,0,0,0,0,1,0};  //KLAR
+const bool LED_DIGIT_1[7]= {1,1,0,0,1,1,1};  //KLAR
+const bool LED_DIGIT_2[7]= {0,0,0,1,1,0,0};  //KLAR äntligen? 3 och 4 är nu släckta? 
+const bool LED_DIGIT_3[7]= {0,0,0,0,1,0,1}; // klar
+const bool LED_DIGIT_4[7]= {1,1,0,0,0,0,1}; // KLAR
+const bool LED_DIGIT_5[7]= {0,0,1,0,0,0,1};  // KLAR, segment 2 och 6 är släckta?
+const bool LED_DIGIT_6[7]= {0,0,1,0,0,0,0}; // KLAR
+const bool LED_DIGIT_7[7]= {0,1,0,0,1,1,1};  //KLAR
+const bool LED_DIGIT_8[7]= {0,0,0,0,0,0,0};
+const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1};
 
-const bool LED_DIGIT_0[7]= {1,1,1,1,1,0,1};
-const bool LED_DIGIT_1[7]= {0,0,1,0,0,1,0};
-const bool LED_DIGIT_2[7]= {1,0,1,1,1,0,1};
-const bool LED_DIGIT_3[7]= {1,1,0,1,0,1,1};
-const bool LED_DIGIT_4[7]= {0,1,1,0,0,1,1};
-const bool LED_DIGIT_5[7]= {1,1,0,0,1,1,1};
-const bool LED_DIGIT_6[7]= {1,1,0,1,1,1,1};
-const bool LED_DIGIT_7[7]= {1,0,1,0,0,1,0};
-const bool LED_DIGIT_8[7]= {1,1,1,1,1,1,1};
-const bool LED_DIGIT_9[7]= {1,1,1,0,1,1,1};
 
 
 const bool* LED_DIGITS[10] = {
@@ -67,10 +68,10 @@ void ammoCounterTask(void *parameter) {
         Serial.println ("Ammo Counter Task running. Current Ammo: " + String(currentAmmoCount));
 
       //  currentDigitOne = currentAmmoCount % 10;
-        //currentDigitTwo = currentAmmoCount / 10;
-        currentDigitOne = 0;
-        displayDigit(currentDigitOne);
-
+        currentDigitTwo = currentAmmoCount / 10;
+        currentDigitOne = currentAmmoCount % 10;
+        //displayDigit(currentDigitOne);
+        displayDigit(currentDigitTwo);
 
     }
     vTaskDelete(NULL);
@@ -82,7 +83,7 @@ void ammo_refill_loop() {
     while (true) {
         if (currentAmmoCount < 99) {
             currentAmmoCount++;
-            vTaskDelay(50/ portTICK_PERIOD_MS);
+            vTaskDelay(200/ portTICK_PERIOD_MS);
         }
         
         else {
@@ -95,14 +96,21 @@ void ammo_refill_loop() {
 }
 
 void displayDigit(int number) {
+    
      const bool* segments = LED_DIGITS[number];
-    for (int seg = 0; seg < 7; seg++) {
+     Serial.println("Displaying digit: " + String(number));
+        for (int seg = 0; seg < 7; seg++) {
 
-        digitalWrite(MUX_PIN_A, multiplexer_array[seg][0]);
-        digitalWrite(MUX_PIN_B, multiplexer_array[seg][1]);
-        digitalWrite(MUX_PIN_C, multiplexer_array[seg][2]);
-        digitalWrite(LED_COMMON_PIN, segments[seg] ? LOW : HIGH); // Activate segment (assuming common anode)
-    }
+            digitalWrite(MUX_PIN_A, multiplexer_array[seg][0]);
+            digitalWrite(MUX_PIN_B, multiplexer_array[seg][1]);
+            digitalWrite(MUX_PIN_C, multiplexer_array[seg][2]);
+            if(segments[seg]) {
+                digitalWrite(LED_COMMON_PIN, HIGH); // Deactivate segment
+            } else {
+            digitalWrite(LED_COMMON_PIN, LOW); // Activate segment (assuming common anode)           
+        }
+        vTaskDelay(3 / portTICK_PERIOD_MS); // Small delay to allow visibility
+    } 
 }
 
 int getAmmmoCount(){

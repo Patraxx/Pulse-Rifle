@@ -56,9 +56,14 @@ void setup() {
 }
 
 
-
+#define testMode 1
 void loop() {
 
+    if (testMode) {
+        currentAmmoCount++;
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    }
 
-
+    
+    
 }
