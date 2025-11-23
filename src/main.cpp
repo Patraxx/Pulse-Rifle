@@ -10,7 +10,7 @@ void setup() {
 
    setupAmmoCounter();
    xTaskCreate(
-      mux_loop_task,          // Task function
+       ammoCounterTask,          // Task function
       "MUX Loop Task",       // Name of the task (for debugging)
       2048,                 // Stack size (in words)
       NULL,                 // Task input parameter
@@ -60,5 +60,5 @@ void setup() {
 void loop() {
 
 
- 
+
 }

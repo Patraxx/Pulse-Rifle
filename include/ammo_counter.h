@@ -6,6 +6,8 @@
 #define MUX_PIN_B 18
 #define MUX_PIN_C 19
 #define LED_COMMON_PIN 17
+#define digitPinOne 21
+#define digitPinTwo 23
  
     /*                        BLUE-RED-WHITE            BLUE-WHITE-YELLOW-BLUE
     4             2            2   1    0                3    4      6     5
@@ -38,6 +40,8 @@ void setupAmmoCounter();
 void ammoCounterTask(void *parameter);
 void ammo_refill_loop();
 void displayDigit(int number);
+void showDigitOnce(int digitPos, int value, int visibleMs);
+
 
 
 
