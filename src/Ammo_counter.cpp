@@ -2,8 +2,8 @@
 
 volatile int currentAmmoCount = 0;
 volatile int currentDigitOne = 0;
-volatile int currentDigitTwo = 0;
 SemaphoreHandle_t ammoCountMutex = NULL;
+volatile int currentDigitTwo = 0;
 
 static int lastKnownAmmoCount = 0;
 
@@ -65,20 +65,21 @@ void setupAmmoCounter() {
 void ammoCounterTask(void *parameter) {
 
     while (true) {
-        Serial.println ("Ammo Counter Task running. Current Ammo: " + String(currentAmmoCount));
+      
 
       //  currentDigitOne = currentAmmoCount % 10;
         currentDigitTwo = currentAmmoCount / 10;
-        currentDigitOne = currentAmmoCount % 10;
-        //displayDigit(currentDigitOne);
-        displayDigit(currentDigitOne);
+       // currentDigitOne = currentAmmoCount % 10;
+       
+            //displayDigit(currentDigitOne);
+            displayDigit(currentDigitOne);
 
-    }
+
+        }
     vTaskDelete(NULL);
 }
 void ammo_refill_loop() {
-    Serial.println("Ammo refill loop started");
-    Serial.println("Last known ammo count: " + String(lastKnownAmmoCount));
+  
 
     while (true) {
         if (currentAmmoCount < 99) {
@@ -98,7 +99,7 @@ void ammo_refill_loop() {
 void displayDigit(int number) {
     
      const bool* segments = LED_DIGITS[number];
-     Serial.println("Displaying digit: " + String(number));
+ 
         for (int seg = 0; seg < 7; seg++) {
 
             digitalWrite(MUX_PIN_A, multiplexer_array[seg][0]);

@@ -46,8 +46,8 @@ void setupSound() {
     out->SetGain(0.8); // 0.0 .. 4.0
 }
 
+setupSound();
 void gun_fire_task(void *parameter) {
-    setupSound();
     EventBits_t bits;
 
 
@@ -119,33 +119,3 @@ void gun_fire_task(void *parameter) {
 }
 
 
-/*
-
- if (triggerPressed) {
-    triggerPressed = false;
-    Serial.println("Trigger pressed!");
-
-    // Stop and clean up if already playing
-    if (wav != nullptr && wav->isRunning()) wav->stop();
-    if (wav != nullptr) { delete wav; wav = nullptr; }
-    if (file2 != nullptr) { delete file2; file2 = nullptr; }
-
-    // Create and start new playback
-    file2 = new AudioFileSourcePROGMEM(pulse_16_bit, pulse_16_bit_length);
-    wav = new AudioGeneratorWAV();
-    wav->begin(file2, out);
-    digitalWrite(vibration_pin, HIGH);
-
-  }
-
-  // Keep playback running until the WAV finishes
-  if (wav != nullptr && wav->isRunning()) {
-    wav->loop(); // this makes it continue playing
-  } else if (wav != nullptr) {
-    // finished playing, clean up
-    delete wav; wav = nullptr;
-    delete file2; file2 = nullptr;
-    digitalWrite(vibration_pin, LOW);
-    Serial.println("Playback finished.");
-  }
-*/

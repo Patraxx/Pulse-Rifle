@@ -3,12 +3,30 @@
 EventGroupHandle_t EventGroupHandle;
 
 
+void ammo_test(){
+    currentAmmoCount++;
+    digitalWrite(digitPinOne, LOW); // Activate digit one
+    digitalWrite(digitPinTwo, LOW); // Deactivate digit two
+    delay(1000); // Keep the digit on for 1 second
+    currentAmmoCount++;
+    digitalWrite(digitPinOne, HIGH); // Deactivate digit one
+    digitalWrite(digitPinTwo, HIGH); // Activate digit two
+    delay(1000); // Keep the digit on for 1 second
+}
 
 void setup() {
-
-   ammoCountMutex = xSemaphoreCreateMutex();
-
    setupAmmoCounter();
+   setupRumble();
+  Serial.begin(115200);
+  delay(1000); // Give time for Serial to initialize
+
+    
+   ammoCountMutex = xSemaphoreCreateMutex();
+    EventGroupHandle = xEventGroupCreate();
+
+  
+
+  
    xTaskCreate(
        ammoCounterTask,          // Task function
       "MUX Loop Task",       // Name of the task (for debugging)
@@ -17,15 +35,7 @@ void setup() {
       1,                    // Priority of the task
       NULL                  // Task handle
    );
-  EventGroupHandle = xEventGroupCreate();
- 
-  pinMode(vibration_pin, OUTPUT);
-  digitalWrite(vibration_pin, HIGH);
-  Serial.begin(115200);
-  delay(1000);
-  Serial.println("Start");
-
-
+  
   xTaskCreate(
       triggerTask,          // Task function
       "Trigger Task",       // Name of the task (for debugging)
@@ -52,6 +62,9 @@ void setup() {
       1,                    // Priority of the task
       NULL                  // Task handle
   );
+ 
+  
+
 
 }
 
@@ -59,17 +72,9 @@ void setup() {
 
 void loop() {
 
+    ammo_test();
 
-    if (testMode) {
-        currentAmmoCount++;
-        digitalWrite(digitPinOne, LOW);
-        digitalWrite(digitPinTwo, HIGH);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-        currentAmmoCount++;
-        digitalWrite(digitPinOne, HIGH);
-        digitalWrite(digitPinTwo, LOW);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-    }
+   
 
     
     

@@ -1,7 +1,6 @@
 #include "trigger.h"
 
 volatile bool triggerPressed = false;
-static int triggerPin = 14; //ändras
 
 
 static unsigned long lastDebounceTime = 0;

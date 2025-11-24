@@ -32,17 +32,17 @@ extern EventGroupHandle_t EventGroupHandle;
 #define INDEX_SIZE 5
 extern volatile int current_sample_index;
 extern SemaphoreHandle_t ammoCountMutex;
-#define testMode 1
+#define testMode 0
 
 #define MUX_PIN_A 5 
 #define MUX_PIN_B 18
 #define MUX_PIN_C 19
 #define LED_COMMON_PIN 17
 
-#define digitPinOne 21
-#define digitPinTwo 23
+#define digitPinOne 33
+#define digitPinTwo 16
+#define triggerPin 14
 
-#define LED_PIN 16
 #define vibration_pin 27
 #define blck_pin 26
 #define wclk_pin 25
