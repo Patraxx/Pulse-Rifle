@@ -56,11 +56,18 @@ void setup() {
 }
 
 
-#define testMode 1
+
 void loop() {
+
 
     if (testMode) {
         currentAmmoCount++;
+        digitalWrite(digitPinOne, LOW);
+        digitalWrite(digitPinTwo, HIGH);
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        currentAmmoCount++;
+        digitalWrite(digitPinOne, HIGH);
+        digitalWrite(digitPinTwo, LOW);
         vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 

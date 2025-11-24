@@ -1,6 +1,6 @@
 #include "headers.h"
 
-#define LED_PIN 16
+
 
 void setupRumble() {
     pinMode(LED_PIN, OUTPUT);

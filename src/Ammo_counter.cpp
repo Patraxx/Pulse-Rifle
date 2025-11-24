@@ -71,7 +71,7 @@ void ammoCounterTask(void *parameter) {
         currentDigitTwo = currentAmmoCount / 10;
         currentDigitOne = currentAmmoCount % 10;
         //displayDigit(currentDigitOne);
-        displayDigit(currentDigitTwo);
+        displayDigit(currentDigitOne);
 
     }
     vTaskDelete(NULL);

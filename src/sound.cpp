@@ -42,7 +42,7 @@ void setupSound() {
    
     wav = new AudioGeneratorWAV();
     out = new AudioOutputI2S();
-    out->SetPinout(26, 25, 22);
+    out->SetPinout(blck_pin, wclk_pin, data_out_pin);
     out->SetGain(0.8); // 0.0 .. 4.0
 }
 

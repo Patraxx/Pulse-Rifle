@@ -19,7 +19,7 @@
 #include "ammo_counter.h"
 #include "freertos/semphr.h"
 
-#define vibration_pin 27
+
 
 extern EventGroupHandle_t EventGroupHandle;
 #define VIBRATING_BIT BIT0
@@ -34,5 +34,18 @@ extern volatile int current_sample_index;
 extern SemaphoreHandle_t ammoCountMutex;
 #define testMode 1
 
+#define MUX_PIN_A 5 
+#define MUX_PIN_B 18
+#define MUX_PIN_C 19
+#define LED_COMMON_PIN 17
+
+#define digitPinOne 21
+#define digitPinTwo 23
+
+#define LED_PIN 16
+#define vibration_pin 27
+#define blck_pin 26
+#define wclk_pin 25
+#define data_out_pin 22
 #endif // HEADERS_H
 
