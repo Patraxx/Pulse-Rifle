@@ -6,11 +6,11 @@ EventGroupHandle_t EventGroupHandle;
 void ammo_test(){
     currentAmmoCount++;
     digitalWrite(digitPinOne, LOW); // Activate digit one
-    digitalWrite(digitPinTwo, LOW); // Deactivate digit two
+    digitalWrite(digitPinTwo, HIGH); // Deactivate digit two
     delay(1000); // Keep the digit on for 1 second
     currentAmmoCount++;
     digitalWrite(digitPinOne, HIGH); // Deactivate digit one
-    digitalWrite(digitPinTwo, HIGH); // Activate digit two
+    digitalWrite(digitPinTwo, LOW); // Activate digit two
     delay(1000); // Keep the digit on for 1 second
 }
 

@@ -46,7 +46,6 @@ void setupSound() {
     out->SetGain(0.8); // 0.0 .. 4.0
 }
 
-setupSound();
 void gun_fire_task(void *parameter) {
     EventBits_t bits;
 
