@@ -22,13 +22,13 @@ const int multiplexer_array[7][3] = {
 
 // 1 = off (segment off), 0 = on (segment on)
 const bool LED_DIGIT_0[7]= {0,0,0,1,0,0,0};  //KLAR  swappade 5 and 3
-const bool LED_DIGIT_1[7]= {1,1,0,1,0,1};  
-const bool LED_DIGIT_2[7]= {0,0,0,1,0,1,0};  //KLAR
-const bool LED_DIGIT_3[7]= {0,0,0,0,0,1,1}; // klar
+const bool LED_DIGIT_1[7]= {1,1,0,1,1,0,1};  
+const bool LED_DIGIT_2[7]= {0,0,0,0,1,1,0};  //KLAR
+const bool LED_DIGIT_3[7]= {0,0,0,0,1,0,1}; // klar
 const bool LED_DIGIT_4[7]= {1,1,0,0,0,0,1}; // KLAR
 const bool LED_DIGIT_5[7]= {0,0,1,0,0,0,1};  // KLAR, segment 2 och 6 är släckta?
 const bool LED_DIGIT_6[7]= {0,0,1,0,0,0,0}; // KLAR
-const bool LED_DIGIT_7[7]= {0,1,0,0,1,1,1}; 
+const bool LED_DIGIT_7[7]= {0,1,0,1,1,0,1}; 
 const bool LED_DIGIT_8[7]= {0,0,0,0,0,0,0};
 const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1}; //klar
 
@@ -101,7 +101,7 @@ void ammo_refill_loop() {
     while (true) {
         if (currentAmmoCount < 99) {
             currentAmmoCount++;
-            vTaskDelay(500/ portTICK_PERIOD_MS);
+            vTaskDelay(2000/ portTICK_PERIOD_MS);
         }
         
         else {

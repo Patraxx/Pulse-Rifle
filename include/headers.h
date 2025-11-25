@@ -39,8 +39,8 @@ extern SemaphoreHandle_t ammoCountMutex;
 #define MUX_PIN_C 19
 #define LED_COMMON_PIN 17
 
-#define digitPinOne 16
-#define digitPinTwo 4
+#define digitPinOne 4
+#define digitPinTwo 16
 #define triggerPin 14
 
 #define vibration_pin 27

@@ -3,19 +3,6 @@
 EventGroupHandle_t EventGroupHandle;
 
 
-void ammo_test(){
-    currentDigitOne = currentAmmoCount % 10;
-    currentAmmoCount++;
-    digitalWrite(digitPinOne, LOW); // Activate digit one
-    digitalWrite(digitPinTwo, HIGH); // Deactivate digit two
-    delay(50); // Keep the digit on for 1 second
-    currentDigitTwo = currentAmmoCount / 10;
-    currentAmmoCount++;
-    digitalWrite(digitPinOne, HIGH); // Deactivate digit one
-    digitalWrite(digitPinTwo, LOW); // Activate digit two
-    delay(50); // Keep the digit on for 1 second
-}
-
 void setup() {
    setupAmmoCounter();
    setupRumble();
