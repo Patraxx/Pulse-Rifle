@@ -21,16 +21,16 @@ const int multiplexer_array[7][3] = {
 
 
 // 1 = off (segment off), 0 = on (segment on)
-const bool LED_DIGIT_0[7]= {0,0,0,0,0,1,0};  //KLAR
-const bool LED_DIGIT_1[7]= {1,1,0,0,1,1,1};  //KLAR
-const bool LED_DIGIT_2[7]= {0,0,0,1,1,0,0};  //KLAR äntligen? 3 och 4 är nu släckta? 
-const bool LED_DIGIT_3[7]= {0,0,0,0,1,0,1}; // klar
+const bool LED_DIGIT_0[7]= {0,0,0,1,0,0,0};  //KLAR  swappade 5 and 3
+const bool LED_DIGIT_1[7]= {1,1,0,1,0,1};  
+const bool LED_DIGIT_2[7]= {0,0,0,1,0,1,0};  //KLAR
+const bool LED_DIGIT_3[7]= {0,0,0,0,0,1,1}; // klar
 const bool LED_DIGIT_4[7]= {1,1,0,0,0,0,1}; // KLAR
 const bool LED_DIGIT_5[7]= {0,0,1,0,0,0,1};  // KLAR, segment 2 och 6 är släckta?
 const bool LED_DIGIT_6[7]= {0,0,1,0,0,0,0}; // KLAR
-const bool LED_DIGIT_7[7]= {0,1,0,0,1,1,1};  //KLAR
+const bool LED_DIGIT_7[7]= {0,1,0,0,1,1,1}; 
 const bool LED_DIGIT_8[7]= {0,0,0,0,0,0,0};
-const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1};
+const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1}; //klar
 
 
 
@@ -46,7 +46,18 @@ const bool* LED_DIGITS[10] = {
    LED_DIGIT_8,
    LED_DIGIT_9
 };
-
+/*  backup, no not change!
+const bool LED_DIGIT_0[7]= {0,0,0,0,0,1,0};  //KLAR
+const bool LED_DIGIT_1[7]= {1,1,0,0,1,1,1};  //KLAR
+const bool LED_DIGIT_2[7]= {0,0,0,1,1,0,0};  //KLAR äntligen? 3 och 4 är nu släckta? 
+const bool LED_DIGIT_3[7]= {0,0,0,0,1,0,1}; // klar
+const bool LED_DIGIT_4[7]= {1,1,0,0,0,0,1}; // KLAR
+const bool LED_DIGIT_5[7]= {0,0,1,0,0,0,1};  // KLAR, segment 2 och 6 är släckta?
+const bool LED_DIGIT_6[7]= {0,0,1,0,0,0,0}; // KLAR
+const bool LED_DIGIT_7[7]= {0,1,0,0,1,1,1};  //KLAR
+const bool LED_DIGIT_8[7]= {0,0,0,0,0,0,0};
+const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1};
+*/
 
 void setupAmmoCounter() {
     pinMode(MUX_PIN_A, OUTPUT);
@@ -69,22 +80,28 @@ void ammoCounterTask(void *parameter) {
 
       //  currentDigitOne = currentAmmoCount % 10;
         currentDigitTwo = currentAmmoCount / 10;
-       // currentDigitOne = currentAmmoCount % 10;
-       
-            //displayDigit(currentDigitOne);
+         currentDigitOne = currentAmmoCount % 10;
+
+            digitalWrite(digitPinOne, LOW); // Activate digit one
+            digitalWrite(digitPinTwo, HIGH); // Deactivate digit two   
             displayDigit(currentDigitOne);
+            digitalWrite(digitPinOne, HIGH); // Deactivate digit one
+            digitalWrite(digitPinTwo, LOW); // Activate digit two
+            displayDigit(currentDigitTwo);
 
 
         }
     vTaskDelete(NULL);
 }
 void ammo_refill_loop() {
+
+     currentAmmoCount = 0;
   
 
     while (true) {
         if (currentAmmoCount < 99) {
             currentAmmoCount++;
-            vTaskDelay(200/ portTICK_PERIOD_MS);
+            vTaskDelay(500/ portTICK_PERIOD_MS);
         }
         
         else {
@@ -110,7 +127,7 @@ void displayDigit(int number) {
             } else {
             digitalWrite(LED_COMMON_PIN, LOW); // Activate segment (assuming common anode)           
         }
-        vTaskDelay(3 / portTICK_PERIOD_MS); // Small delay to allow visibility
+        vTaskDelay(1 / portTICK_PERIOD_MS); // Small delay to allow visibility
     } 
 }
 
