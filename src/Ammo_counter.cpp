@@ -34,6 +34,7 @@ const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1}; //klar
 
 
 
+
 const bool* LED_DIGITS[10] = {
    LED_DIGIT_0,
    LED_DIGIT_1,
@@ -69,6 +70,52 @@ void setupAmmoCounter() {
     digitalWrite(LED_COMMON_PIN, HIGH); // Turn off common LED pin initially
     digitalWrite(digitPinOne, HIGH); // Turn off digit one initially
     digitalWrite(digitPinTwo, HIGH); // Turn off digit two initially
+}
+
+void ammoDrainTask(void *parameter) {
+    EventBits_t bits;
+
+    while (true) {
+        // Wait until a drain is requested. Do NOT clear the start bit here so
+        // other tasks can observe that draining is in progress.
+        bits = xEventGroupWaitBits(EventGroupHandle, AMMO_DRAIN_START_BIT, pdFALSE, pdFALSE, portMAX_DELAY);
+
+        // Continue draining until a STOP bit is set elsewhere.
+        while (true) {
+            bits = xEventGroupGetBits(EventGroupHandle);
+            if (bits & AMMO_DRAIN_STOP_BIT) {
+                Serial.println("Ammo drain stopped");
+                // Clear both START and STOP bits so the state is reset.
+                xEventGroupClearBits(EventGroupHandle, AMMO_DRAIN_START_BIT | AMMO_DRAIN_STOP_BIT);
+                break;
+            }
+
+            if (currentAmmoCount > 0) {
+                // consider taking ammoCountMutex here if other tasks modify currentAmmoCount concurrently
+                currentAmmoCount--;
+            }
+            else {
+                Serial.println("Ammo depleted");
+
+                if (testMode) {
+                    Serial.println("Test mode active: refilling ammo");
+                    currentAmmoCount = 30; // refill for testing
+                } else {
+                    // Signal that ammo is out
+                    xEventGroupSetBits(EventGroupHandle, AMMO_OUT_BIT);
+                }
+                
+            }
+            vTaskDelay(50 / portTICK_PERIOD_MS); // Drain rat
+        }
+
+
+
+    }
+
+
+
+    vTaskDelete(NULL);
 }
 
 

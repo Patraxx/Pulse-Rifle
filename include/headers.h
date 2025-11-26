@@ -27,12 +27,14 @@ extern EventGroupHandle_t EventGroupHandle;
 #define AUDIO_INTERRUPT_BIT BIT2
 #define AUDIO_START_BIT BIT3
 #define RUMBLE_START_BIT BIT4
-#define AMMO_EXPENDED_BIT BIT5
+#define AMMO_DRAIN_START_BIT BIT5
+#define AMMO_DRAIN_STOP_BIT BIT7
 #define AMMO_REFILLED_BIT BIT6
+#define AMMO_OUT_BIT BIT8
 #define INDEX_SIZE 5
 extern volatile int current_sample_index;
 extern SemaphoreHandle_t ammoCountMutex;
-#define testMode 0
+#define testMode 1
 
 #define MUX_PIN_A 5 
 #define MUX_PIN_B 18

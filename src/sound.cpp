@@ -48,6 +48,7 @@ void setupSound() {
 
 void gun_fire_task(void *parameter) {
     EventBits_t bits;
+    setupSound();
 
 
 
@@ -58,6 +59,13 @@ void gun_fire_task(void *parameter) {
 
         /* local play index to avoid global name conflicts */
         int index = 0;
+
+        // Defensive: ensure audio subsystem initialized
+        if (!wav || !out) {
+            Serial.println("Sound subsystem not initialized (wav/out null)");
+            vTaskDelay(100 / portTICK_PERIOD_MS);
+            continue;
+        }
 
         if(bits & AUDIO_START_BIT){
             /* keep index persistent per-task by using a static local */
@@ -111,6 +119,8 @@ void gun_fire_task(void *parameter) {
                 vTaskDelay(10 / portTICK_PERIOD_MS);
             }
             xEventGroupClearBits(EventGroupHandle, AUDIO_PLAYING_BIT);
+            xEventGroupSetBits(EventGroupHandle, AMMO_DRAIN_STOP_BIT);
+            
             delete currentSample;
         }
     }

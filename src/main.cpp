@@ -6,6 +6,8 @@ EventGroupHandle_t EventGroupHandle;
 void setup() {
    setupAmmoCounter();
    setupRumble();
+
+   currentAmmoCount = 99;
   Serial.begin(115200);
   delay(1000); // Give time for Serial to initialize
 
@@ -15,8 +17,15 @@ void setup() {
 
   
 
-  
-   xTaskCreate(
+  xTaskCreate(
+      ammoDrainTask,          // Task function
+      "Ammo Drain Task",       // Name of the task (for debugging)
+      2048,                 // Stack size (in words)
+      NULL,                 // Task input parameter
+      1,                    // Priority of the task
+      NULL                  // Task handle
+   );
+  xTaskCreate(
        ammoCounterTask,          // Task function
       "MUX Loop Task",       // Name of the task (for debugging)
       2048,                 // Stack size (in words)
@@ -61,7 +70,7 @@ void setup() {
 
 void loop() {
 
-   ammo_refill_loop();
+ 
 
    
 

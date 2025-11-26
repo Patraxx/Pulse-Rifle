@@ -36,6 +36,7 @@ void ammoCounterTask(void *parameter);
 void ammo_refill_loop();
 void displayDigit(int number);
 void showDigitOnce(int digitPos, int value, int visibleMs);
+void ammoDrainTask(void *parameter);
 
 
 

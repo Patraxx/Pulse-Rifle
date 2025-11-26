@@ -39,7 +39,7 @@ void triggerTask(void *parameter) {
           // falling edge detected: button pressed
           xEventGroupSetBits(EventGroupHandle, AUDIO_START_BIT);
           xEventGroupSetBits(EventGroupHandle, RUMBLE_START_BIT);
-          xEventGroupSetBits(EventGroupHandle, AMMO_EXPENDED_BIT);
+          xEventGroupSetBits(EventGroupHandle, AMMO_DRAIN_START_BIT);
           
         }
       }
