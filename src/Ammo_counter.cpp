@@ -72,6 +72,8 @@ void setupAmmoCounter() {
     digitalWrite(digitPinTwo, HIGH); // Turn off digit two initially
 }
 
+
+
 void ammoDrainTask(void *parameter) {
     EventBits_t bits;
 
@@ -148,6 +150,7 @@ void ammo_refill_loop() {
     while (true) {
         if (currentAmmoCount < 99) {
             currentAmmoCount++;
+            Serial.println(" ammo: " + String(currentAmmoCount));
             vTaskDelay(2000/ portTICK_PERIOD_MS);
         }
         

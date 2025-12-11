@@ -3,11 +3,29 @@
 
 
 void setupRumble() {
-    pinMode(vibration_pin, OUTPUT);
-    digitalWrite(vibration_pin, HIGH);
+    pinMode(MOTOR_PIN_1, OUTPUT);
+    pinMode(MOTOR_PIN_2, OUTPUT);
+ 
+    digitalWrite(MOTOR_PIN_1, LOW);
+    digitalWrite(MOTOR_PIN_2, LOW);
+}
+void stopMotors() {
+    digitalWrite(MOTOR_PIN_1, LOW);
+    digitalWrite(MOTOR_PIN_2, LOW);
+}
+void breakMotors() {
+    digitalWrite(MOTOR_PIN_1, HIGH);
+    digitalWrite(MOTOR_PIN_2, HIGH);
+}
+
+void runMotors() {
+    digitalWrite(MOTOR_PIN_1, HIGH);
+    digitalWrite(MOTOR_PIN_2, LOW);
 }
 
 void rumbleTask(void *parameter) {
+    pinMode(LED_PIN1, OUTPUT);
+    digitalWrite(LED_PIN1, LOW); // Turn off LED initially
 
     EventBits_t bits;
 
@@ -24,12 +42,15 @@ void rumbleTask(void *parameter) {
                 xEventGroupClearBits(EventGroupHandle, RUMBLE_START_BIT);
                 break;
             }        
-            digitalWrite(vibration_pin, LOW);
+            digitalWrite(LED_PIN1, HIGH);  //2.6V - 2.4 (efter resistans, 5v)
+            runMotors();
           
-            vTaskDelay(30/ portTICK_PERIOD_MS);
-            digitalWrite(vibration_pin, HIGH);
+            vTaskDelay(50/ portTICK_PERIOD_MS);
+          
+              digitalWrite(LED_PIN1, LOW);
+            breakMotors();
         
-            vTaskDelay(70/ portTICK_PERIOD_MS);       
+            vTaskDelay(50/ portTICK_PERIOD_MS);       
         }
     
                    
