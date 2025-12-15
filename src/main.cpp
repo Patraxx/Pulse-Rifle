@@ -4,8 +4,8 @@ EventGroupHandle_t EventGroupHandle;
 
 
 void setup() {
-  pinMode(debugLED, OUTPUT);
-  digitalWrite(debugLED, LOW); // Turn off debug LED initially
+ 
+
    setupAmmoCounter();
    setupRumble();
 
@@ -73,13 +73,10 @@ void setup() {
 void loop() {
 
 
+
   
   
-    
 
-
-
-    
 
 
 

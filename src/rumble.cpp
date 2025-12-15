@@ -5,7 +5,7 @@
 void setupRumble() {
     pinMode(MOTOR_PIN_1, OUTPUT);
     pinMode(MOTOR_PIN_2, OUTPUT);
- 
+
     digitalWrite(MOTOR_PIN_1, LOW);
     digitalWrite(MOTOR_PIN_2, LOW);
 }
@@ -42,7 +42,7 @@ void rumbleTask(void *parameter) {
                 xEventGroupClearBits(EventGroupHandle, RUMBLE_START_BIT);
                 break;
             }        
-            digitalWrite(LED_PIN1, HIGH);  //2.6V - 2.4 (efter resistans, 5v)
+            digitalWrite(LED_PIN1, HIGH);  //2.6V - 2.4 (efter resistans, 65)
             runMotors();
           
             vTaskDelay(50/ portTICK_PERIOD_MS);
