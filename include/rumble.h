@@ -1,6 +1,8 @@
 #ifndef RUMBLE_H
 #define RUMBLE_H
 
+extern volatile bool rumbleOn;
+
 void setupRumble();
 void rumbleTask(void *parameter);
 void stopMotors();

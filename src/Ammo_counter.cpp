@@ -35,6 +35,9 @@ const bool LED_DIGIT_9[7]= {0,0,0,0,0,0,1}; //klar
 
 
 
+
+
+
 const bool* LED_DIGITS[10] = {
    LED_DIGIT_0,
    LED_DIGIT_1,

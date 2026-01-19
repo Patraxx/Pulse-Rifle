@@ -2,6 +2,28 @@
 #include "pulse.h"
 EventGroupHandle_t EventGroupHandle;
 
+volatile bool automatic_refill_mode = true;
+volatile bool soundOn = true;
+volatile bool rumbleOn = true;
+
+void setup_adc_buttons() {
+    pinMode(SettingsButton, INPUT);
+    analogSetAttenuation(ADC_11db); // Set attenuation for full range (0-3.3V)
+    analogSetWidth(ADC_WIDTH_12Bit); // Set ADC width to 12 bits
+}
+
+void adc_buttons_task(void *parameter) {
+    while (true) {
+
+        int adcValue = analogRead(SettingsButton);
+        if (adcValue > 500) {
+            Serial.println("ADC Value: " + String(adcValue));
+            vTaskDelay(200 / portTICK_PERIOD_MS);
+        }
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+          
+    }
+}
 
 void setup() {
  
