@@ -40,20 +40,22 @@ extern SemaphoreHandle_t ammoCountMutex;
 #define MUX_PIN_B 18
 #define MUX_PIN_C 19
 #define LED_COMMON_PIN 17
-#define debugLED 23
+//#define debugLED 23
 
 #define digitPinOne 4
 #define digitPinTwo 16
 #define triggerPin 14
 
 
-#define blck_pin 26
+#define blck_pin 26 
 #define wclk_pin 25
 #define data_out_pin 22
-#define LED_PIN1 21
+#define LED_PIN1 23
 
 #define MOTOR_PIN_1 32
 #define MOTOR_PIN_2 33
+
+#define SettingsButton 35 //turn off vibration, turn off sound, figure out other settings i could need. 
 
 //gpio safe list: 4, 5, 14, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33
 

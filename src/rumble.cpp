@@ -45,13 +45,14 @@ void rumbleTask(void *parameter) {
             digitalWrite(LED_PIN1, HIGH);  //2.6V - 2.4 (efter resistans, 65)
             runMotors();
           
-            vTaskDelay(50/ portTICK_PERIOD_MS);
+            vTaskDelay(40/ portTICK_PERIOD_MS);
           
               digitalWrite(LED_PIN1, LOW);
             breakMotors();
         
-            vTaskDelay(50/ portTICK_PERIOD_MS);       
+            vTaskDelay(40/ portTICK_PERIOD_MS);       
         }
+        stopMotors();
     
                    
            
