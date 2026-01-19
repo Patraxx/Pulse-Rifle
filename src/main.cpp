@@ -16,7 +16,7 @@ void adc_buttons_task(void *parameter) {
     while (true) {
 
         int adcValue = analogRead(SettingsButton);
-        if (adcValue > 500) {
+        if (adcValue > 1400) {
             Serial.println("ADC Value: " + String(adcValue));
             vTaskDelay(200 / portTICK_PERIOD_MS);
         }
@@ -26,6 +26,16 @@ void adc_buttons_task(void *parameter) {
 }
 
 void setup() {
+
+    setup_adc_buttons();
+    xTaskCreate(
+        adc_buttons_task,          // Task function
+        "ADC Buttons Task",       // Name of the task (for debugging)
+        2048,                 // Stack size (in words)
+        NULL,                 // Task input parameter
+        1,                    // Priority of the task
+        NULL                  // Task handle
+    );
  
 
    setupAmmoCounter();

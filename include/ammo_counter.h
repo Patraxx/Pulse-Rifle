@@ -31,7 +31,7 @@ extern const bool LED_DIGIT_9[7];
 
 extern const bool* LED_DIGITS[10];
 
-extern const bool automatic_refill_mode;
+extern volatile bool automatic_refill_mode;
 
 void setupAmmoCounter();
 void ammoCounterTask(void *parameter);
