@@ -15,13 +15,36 @@ void setup_adc_buttons() {
 void adc_buttons_task(void *parameter) {
     while (true) {
 
-        int adcValue = analogRead(SettingsButton);
-        if (adcValue > 1400) {
-            Serial.println("ADC Value: " + String(adcValue));
-            vTaskDelay(200 / portTICK_PERIOD_MS);
+            int adcValue = analogRead(SettingsButton);
+            if (adcValue > 1400) {
+
+                if(adcValue < ADC_button_4_Median_val + rangevalue && adcValue > ADC_button_4_Median_val - rangevalue) {
+                    // Button 4 pressed
+                    Serial.println("Button 4 pressed: Toggle automatic refill mode");
+                    automatic_refill_mode = !automatic_refill_mode;
+                    Serial.print("Automatic refill mode: ");
+                    Serial.println(automatic_refill_mode ? "ON" : "OFF");
+                    vTaskDelay(500 / portTICK_PERIOD_MS); // Debounce delay
+                }
+                else if(adcValue < ADC_button_3_Median_val + rangevalue && adcValue > ADC_button_3_Median_val - rangevalue) {
+                    // Button 3 pressed
+                    Serial.println("Button 3 pressed: Toggle rumble");
+                    rumbleOn = !rumbleOn;
+                    Serial.print("Rumble: ");
+                    Serial.println(rumbleOn ? "ON" : "OFF");
+                    vTaskDelay(500 / portTICK_PERIOD_MS); // Debounce delay
+                }
+                else if(adcValue < ADC_button_2_Median_val + rangevalue && adcValue > ADC_button_2_Median_val - rangevalue) {
+                    // Button 2 pressed
+                    Serial.println("Button 2 pressed: Toggle sound");
+                    soundOn = !soundOn;
+                    Serial.print("Sound: ");
+                    Serial.println(soundOn ? "ON" : "OFF");
+                    vTaskDelay(500 / portTICK_PERIOD_MS); // Debounce delay
+            }
+            vTaskDelay(100 / portTICK_PERIOD_MS);
+            
         }
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-          
     }
 }
 

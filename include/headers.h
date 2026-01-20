@@ -55,10 +55,12 @@ extern SemaphoreHandle_t ammoCountMutex;
 #define MOTOR_PIN_1 32
 #define MOTOR_PIN_2 33
 
+#define rangevalue 150
+
 #define ADC_button_1_Median_val 3200
 #define ADC_button_2_Median_val 2700
 #define ADC_button_3_Median_val 2300
-#define ADC_button_4_Median_val 2000
+#define ADC_button_4_Median_val 1950  //perhaps solder on extra resistance here.
 
 #define SettingsButton 35 //turn off vibration, turn off sound, figure out other settings i could need. 
 

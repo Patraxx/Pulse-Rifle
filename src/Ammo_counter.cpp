@@ -101,14 +101,15 @@ void ammoDrainTask(void *parameter) {
             }
             else {
                 Serial.println("Ammo depleted");
+                xEventGroupSetBits(EventGroupHandle, AMMO_OUT_BIT);
 
-                if (testMode) {
+                if (automatic_refill_mode) {
                     Serial.println("Test mode active: refilling ammo");
-                    currentAmmoCount = 30; // refill for testing
-                } else {
+                    ammo_refill_loop();
                     // Signal that ammo is out
-                    xEventGroupSetBits(EventGroupHandle, AMMO_OUT_BIT);
+                    
                 }
+              
                 
             }
             vTaskDelay(50 / portTICK_PERIOD_MS); // Drain rat

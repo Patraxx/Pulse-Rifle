@@ -31,6 +31,9 @@ void rumbleTask(void *parameter) {
 
         for (;;) {
             bits = xEventGroupWaitBits(EventGroupHandle, RUMBLE_START_BIT, pdTRUE, pdFALSE, portMAX_DELAY);
+            if (rumbleOn == false) {
+                continue;
+            }   
             Serial.println("Rumble task activated");
 
             int max_rumbles = (current_sample_index == 0 || current_sample_index == 1) ? 4 : 8;
@@ -54,9 +57,7 @@ void rumbleTask(void *parameter) {
         }
         stopMotors();
     
-                   
-           
-            
+                        
     }
     vTaskDelete(NULL);
 }
