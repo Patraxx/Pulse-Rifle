@@ -45,20 +45,21 @@ void adc_buttons_task(void *parameter) {
             vTaskDelay(100 / portTICK_PERIOD_MS);
             
         }
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
 }
 
 void setup() {
 
     setup_adc_buttons();
-    xTaskCreate(
+   /* xTaskCreate(
         adc_buttons_task,          // Task function
         "ADC Buttons Task",       // Name of the task (for debugging)
         2048,                 // Stack size (in words)
         NULL,                 // Task input parameter
         1,                    // Priority of the task
         NULL                  // Task handle
-    );
+    );*/
  
 
    setupAmmoCounter();

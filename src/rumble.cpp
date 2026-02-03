@@ -55,7 +55,7 @@ void rumbleTask(void *parameter) {
         
             vTaskDelay(40/ portTICK_PERIOD_MS);       
         }
-        stopMotors();
+        breakMotors();
     
                         
     }
